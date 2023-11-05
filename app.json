@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "drink-log",
-    "slug": "drink-log",
+    "name": "react-native-shared-element-animation",
+    "slug": "react-native-shared-element-animation",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
