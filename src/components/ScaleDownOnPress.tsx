@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
-import { Pressable } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import React, { ReactNode, useEffect } from 'react';
+import { TouchableWithoutFeedback } from 'react-native';
 
-import Reanimated, {
+import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
@@ -9,41 +10,40 @@ import Reanimated, {
 } from 'react-native-reanimated';
 
 interface Props {
-  scaleDownValue?: number;
-  onPress: () => void;
   children: ReactNode;
+  onPress: VoidFunction;
+  scaleDownValue?: number;
+  onPressDelay?: number;
 }
 
-const animationConfig = {
-  duration: 400,
-  easing: Easing.out(Easing.quad),
-};
-
-/**
- * @param scaleDownValue: the value that you want to scale down by. Subtle scaling is better. Default is 0.95
- * Wrap a component in this and it will scale down on press.
- */
-export function ScaleDownOnPress({ scaleDownValue = 0.95, ...props }: Props) {
+export function ScaleDownOnPress({
+  children,
+  onPress,
+  scaleDownValue = 0.95,
+  onPressDelay = 0,
+}: Props) {
   const scale = useSharedValue(1);
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          scale: withTiming(scale.value, animationConfig),
-        },
-      ],
-    };
-  });
-  const handlePressIn = () => (scale.value = scaleDownValue);
-  const handlePressOut = () => (scale.value = 1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: withTiming(scale.value, {
+          duration: 400,
+          easing: Easing.out(Easing.quad),
+        }),
+      },
+    ],
+  }));
+
+  const onPressIn = () => (scale.value = scaleDownValue);
+  const onPressOut = () => {
+    scale.value = 1;
+    setTimeout(onPress, 450);
+  };
 
   return (
-    <Pressable
-      onPressIn={handlePressIn}
-      onPressOut={() => setTimeout(handlePressOut, 100)}
-      onPress={() => setTimeout(props.onPress, 100)}
-    >
-      <Reanimated.View style={animatedStyle}>{props.children}</Reanimated.View>
-    </Pressable>
+    <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut}>
+      <Animated.View style={animatedStyle}>{children}</Animated.View>
+    </TouchableWithoutFeedback>
   );
 }

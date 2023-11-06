@@ -1,86 +1,45 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { COLORS } from '../theme/theme';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../utils/native';
-import Reanimated, { SharedTransition } from 'react-native-reanimated';
-import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+import Animated, { FadeInUp } from 'react-native-reanimated';
+import { FavouriteButton } from '../components/FavouriteButton';
+import { ItemCollection } from '../components/ItemCollection';
 import { NavigationProps } from '../navigations/MainNavigator';
+import { COLORS } from '../theme/theme';
 
 export function Listing() {
   const navigation = useNavigation<NavigationProps>();
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          justifyContent: 'center',
-          alignItems: 'center',
-          top: 63,
-          left: 20,
-          zIndex: 2,
-        }}
-        onPress={() => navigation.navigate('Home')}
+      <Animated.View
+        style={[styles.iconsContainer, { width: windowWidth }]}
+        entering={FadeInUp.delay(400)}
       >
-        <Image
-          style={{
-            width: 37,
-            height: 37,
-            padding: 10,
-          }}
-          source={require('../../assets/images/back-arrow.png')}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          justifyContent: 'center',
-          alignItems: 'center',
-          top: 59,
-          right: 20,
-          height: 49,
-          width: 49,
-          borderRadius: 30,
-          backgroundColor: '#ffffff50',
-          zIndex: 2,
-        }}
-      >
-        <Image
-          style={{
-            width: 25,
-            height: 25,
-            padding: 10,
-            opacity: 0.8,
-          }}
-          source={require('../../assets/images/white-heart.png')}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-      <Reanimated.Image
-        style={{
-          position: 'absolute',
-          top: 0,
-          width: '100%',
-          height: SCREEN_HEIGHT * 0.71,
-          borderRadius: 40,
-        }}
+        <TouchableOpacity onPress={navigation.goBack}>
+          <Image
+            style={styles.backArrowImage}
+            source={require('../../assets/images/back-arrow.png')}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <FavouriteButton />
+      </Animated.View>
+      <Animated.Image
+        style={[styles.sharedImage, { height: windowHeight * 0.71 }]}
         source={require('../../assets/images/listing-item.jpg')}
         resizeMode="cover"
         sharedTransitionTag="item"
       />
-      <Image
-        style={{
-          width: SCREEN_WIDTH - 4,
-          height: 280,
-          marginHorizontal: 2,
-          position: 'absolute',
-          bottom: -20,
-        }}
-        source={require('../../assets/images/listing-bottom.png')}
-        resizeMode="contain"
-      />
+      <ItemCollection />
       <StatusBar style="light" animated={true} />
     </View>
   );
@@ -92,6 +51,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.white,
+  },
+  iconsContainer: {
+    paddingLeft: 12,
+    paddingRight: 16,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    top: 60,
+    zIndex: 2,
+  },
+  backArrowImage: {
+    width: 37,
+    height: 37,
+  },
+  sharedImage: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    borderRadius: 40,
   },
   text: {
     fontWeight: 'bold',

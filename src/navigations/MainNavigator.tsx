@@ -1,9 +1,8 @@
-import React from 'react';
 import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 import { Home } from '../screens/Home';
 import { Listing } from '../screens/Listing';
 
@@ -26,10 +25,7 @@ export function MainNavigator() {
       <Stack.Screen
         name="Listing"
         component={Listing}
-        options={{
-          animation: 'fade_from_bottom',
-          animationDuration: 500,
-        }}
+        options={{ animation: 'slide_from_bottom' }}
       />
     </Stack.Navigator>
   );
