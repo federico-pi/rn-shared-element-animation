@@ -1,45 +1,95 @@
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Image,
+  LayoutChangeEvent,
   StyleSheet,
   TouchableOpacity,
   View,
   useWindowDimensions,
 } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FavouriteButton } from '../components/FavouriteButton';
-import { ItemCollection } from '../components/ItemCollection';
-import { NavigationProps } from '../navigations/MainNavigator';
-import { COLORS } from '../theme/theme';
+import { NavigationProps, StackParamList } from '../navigations/MainNavigator';
+import { ASSETS } from '../utils/assets';
+import { AVAILABLE_ITEMS_MAP } from '../utils/listing';
+import { THEME } from '../utils/theme';
+import { OverlayInfoBox } from '../components/OverlayInfoBox';
 
 export function Listing() {
   const navigation = useNavigation<NavigationProps>();
+  const insets = useSafeAreaInsets();
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
+  const {
+    params: { item },
+  } = useRoute<RouteProp<StackParamList, 'Listing'>>();
+
+  const [contentHeight, setContentHeight] = useState(windowWidth);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    setContentHeight(event.nativeEvent.layout.height);
+  }, []);
+
+  const itemCollectionHeight = useMemo(() => {
+    const assetSource = Image.resolveAssetSource(ASSETS.images.itemCollection);
+
+    const imageRatio = assetSource.width / windowWidth;
+
+    return assetSource.height / imageRatio;
+  }, []);
 
   return (
     <View style={styles.container}>
       <Animated.View
-        style={[styles.iconsContainer, { width: windowWidth }]}
-        entering={FadeInUp.delay(400)}
+        style={[
+          styles.actionsContainer,
+          { width: windowWidth, top: insets.top + THEME.spacing.sm },
+        ]}
+        entering={FadeInDown.delay(200).duration(600)}
       >
-        <TouchableOpacity onPress={navigation.goBack}>
+        <TouchableOpacity
+          onPress={navigation.goBack}
+          hitSlop={{
+            top: THEME.spacing.md,
+            right: THEME.spacing.md,
+            bottom: THEME.spacing.md,
+            left: THEME.spacing.md,
+          }}
+        >
           <Image
             style={styles.backArrowImage}
-            source={require('../../assets/images/back-arrow.png')}
+            source={ASSETS.icons.backArrow}
             resizeMode="contain"
           />
         </TouchableOpacity>
         <FavouriteButton />
       </Animated.View>
       <Animated.Image
-        style={[styles.sharedImage, { height: windowHeight * 0.71 }]}
-        source={require('../../assets/images/listing-item.jpg')}
+        style={[
+          styles.sharedImage,
+          {
+            width: windowWidth,
+            height: windowHeight - (insets.bottom + contentHeight),
+          },
+        ]}
+        source={AVAILABLE_ITEMS_MAP[item].source}
         resizeMode="cover"
-        sharedTransitionTag="item"
+        sharedTransitionTag={item}
       />
-      <ItemCollection />
+      <View onLayout={onLayout} style={styles.content}>
+        <Animated.Image
+          style={{
+            width: windowWidth - THEME.spacing.md * 2,
+            height: itemCollectionHeight,
+          }}
+          entering={FadeInDown.delay(200).duration(600)}
+          exiting={FadeInUp}
+          source={ASSETS.images.itemCollection}
+          resizeMode="contain"
+        />
+      </View>
       <StatusBar style="light" animated={true} />
     </View>
   );
@@ -48,33 +98,30 @@ export function Listing() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: THEME.colors.white,
   },
-  iconsContainer: {
-    paddingLeft: 12,
-    paddingRight: 16,
+  actionsContainer: {
+    paddingHorizontal: THEME.spacing.lg,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    top: 60,
     zIndex: 2,
   },
   backArrowImage: {
-    width: 37,
-    height: 37,
+    width: 28,
+    height: 28,
   },
   sharedImage: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    borderRadius: 40,
+    borderRadius: THEME.radius.xl,
   },
   text: {
-    fontWeight: 'bold',
     fontSize: 32,
-    color: COLORS.body,
+    color: THEME.colors.body,
+    fontWeight: 'bold',
+  },
+  content: {
+    paddingTop: THEME.spacing.md * 2,
+    paddingHorizontal: THEME.spacing.md,
   },
 });

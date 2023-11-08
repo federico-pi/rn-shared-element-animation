@@ -1,59 +1,59 @@
 import { useNavigation } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { BottomNavigation } from '../components/BottomNavigation';
-import { CurrentBidBox } from '../components/CurrentBidBox';
-import { FavouriteButton } from '../components/FavouriteButton';
+import { ItemCard } from '../components/ItemCard';
 import { ProfileSection } from '../components/ProfileSection';
-import { ScaleDownOnPress } from '../components/ScaleDownOnPress';
 import { NavigationProps } from '../navigations/MainNavigator';
-import { COLORS } from '../theme/theme';
+import { AVAILABLE_ITEMS_MAP, AvailableItems } from '../utils/listing';
+import { THEME } from '../utils/theme';
 
 export function Home() {
   const navigation = useNavigation<NavigationProps>();
 
+  const onItemPress = (item: AvailableItems) => {
+    navigation.navigate('Listing', { item: item });
+  };
+
   return (
-    <View style={styles.container}>
-      <ProfileSection />
-        <ScaleDownOnPress
-          onPress={() => navigation.navigate('Listing')}
-          scaleDownValue={0.9}
-        >
-          <FavouriteButton
-            display={{ containerStyle: styles.favouriteButtonWrapper }}
-          />
-          <Animated.Image
-            style={styles.sharedImage}
-            source={require('../../assets/images/listing-item.jpg')}
-            resizeMethod="resize"
-            resizeMode="cover"
-            sharedTransitionTag="item"
-          />
-          <CurrentBidBox />
-        </ScaleDownOnPress>
-      <BottomNavigation />
-      <StatusBar style="dark" />
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <ProfileSection />
+        <View style={styles.listContainer}>
+          {(Object.keys(AVAILABLE_ITEMS_MAP) as AvailableItems[]).map(
+            (item, index) => (
+              <ItemCard
+                key={`${item}${index}`}
+                item={item}
+                onPress={() => onItemPress(item)}
+                display={{
+                  containerStyle: {
+                    position: 'absolute',
+                    zIndex: index,
+                  },
+                }}
+              />
+            )
+          )}
+        </View>
+        <BottomNavigation />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: THEME.colors.white,
+  },
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    paddingHorizontal: THEME.spacing.md,
   },
-  favouriteButtonWrapper: {
-    position: 'absolute',
-    top: 20,
-    right: 38,
-    zIndex: 2,
-  },
-  sharedImage: {
-    width: 'auto',
-    marginHorizontal: 18,
-    height: 425,
-    borderRadius: 40,
+  listContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: THEME.spacing.xl,
   },
 });

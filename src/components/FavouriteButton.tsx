@@ -1,32 +1,38 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { ASSETS } from '../utils/assets';
+import { AVAILABLE_ITEMS_MAP } from '../utils/listing';
 
 export interface FavouriteProps {
   display?: {
-    containerStyle?: ViewStyle;
+    containerStyle?: StyleProp<ViewStyle>;
   };
 }
 
 export function FavouriteButton({ display = {} }: FavouriteProps) {
   return (
-    <TouchableOpacity style={[styles.container, display.containerStyle]}>
+    <View style={[styles.container, display.containerStyle]}>
       <Image
         style={styles.icon}
-        source={require('../../assets/images/white-heart.png')}
+        source={ASSETS.icons.whiteHeart}
         resizeMode="contain"
       />
-    </TouchableOpacity>
+    </View>
   );
 }
 
+const FAVOURITE_BUTTON_SIZE = 50;
+
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 49,
-    width: 49,
-    borderRadius: 30,
-    backgroundColor: '#ffffff50',
+    height: FAVOURITE_BUTTON_SIZE,
+    width: FAVOURITE_BUTTON_SIZE,
+    borderRadius: FAVOURITE_BUTTON_SIZE / 2,
+    zIndex: Object.keys(AVAILABLE_ITEMS_MAP).length + 1,
+    overflow: 'hidden',
   },
   icon: {
     width: 25,

@@ -1,3 +1,4 @@
+import { RouteProp } from '@react-navigation/native';
 import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
@@ -5,15 +6,16 @@ import {
 import React from 'react';
 import { Home } from '../screens/Home';
 import { Listing } from '../screens/Listing';
+import { AvailableItems } from '../utils/listing';
 
-const Stack = createNativeStackNavigator();
-
-type StackParamList = {
+export type StackParamList = {
   Home: undefined;
-  Listing: undefined;
+  Listing: { item: AvailableItems };
 };
 
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;
+
+const Stack = createNativeStackNavigator();
 
 export function MainNavigator() {
   return (
@@ -25,7 +27,7 @@ export function MainNavigator() {
       <Stack.Screen
         name="Listing"
         component={Listing}
-        options={{ animation: 'slide_from_bottom' }}
+        options={{ animation: 'fade_from_bottom' }}
       />
     </Stack.Navigator>
   );
