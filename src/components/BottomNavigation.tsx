@@ -1,8 +1,12 @@
 import React, { useMemo } from 'react';
 import { Image, useWindowDimensions } from 'react-native';
-import { THEME } from '../utils/theme';
 import { ASSETS } from '../utils/assets';
+import { THEME } from '../utils/theme';
 
+/**
+ * @todo implement real component
+ * @returns design placeholder
+ */
 export function BottomNavigation() {
   const { width: windowWidth } = useWindowDimensions();
 

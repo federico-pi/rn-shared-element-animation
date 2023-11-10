@@ -1,40 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { BottomNavigation } from '../components/BottomNavigation';
-import { ItemCard } from '../components/ItemCard';
 import { ProfileSection } from '../components/ProfileSection';
-import { NavigationProps } from '../navigations/MainNavigator';
-import { AVAILABLE_ITEMS_MAP, AvailableItems } from '../utils/listing';
+import { AVAILABLE_ITEMS_MAP } from '../utils/listing';
 import { THEME } from '../utils/theme';
 
+import { ItemCardAnimated } from '../components/ItemCard/ItemCardAnimated';
+
 export function Home() {
-  const navigation = useNavigation<NavigationProps>();
-
-  const onItemPress = (item: AvailableItems) => {
-    navigation.navigate('Listing', { item: item });
-  };
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <ProfileSection />
         <View style={styles.listContainer}>
-          {(Object.keys(AVAILABLE_ITEMS_MAP) as AvailableItems[]).map(
-            (item, index) => (
-              <ItemCard
-                key={`${item}${index}`}
-                item={item}
-                onPress={() => onItemPress(item)}
-                display={{
-                  containerStyle: {
-                    position: 'absolute',
-                    zIndex: index,
-                  },
-                }}
-              />
-            )
-          )}
+          {AVAILABLE_ITEMS_MAP.map((item) => (
+            <ItemCardAnimated key={item.key} item={item} />
+          ))}
         </View>
         <BottomNavigation />
       </View>
@@ -52,8 +33,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: THEME.spacing.md,
   },
   listContainer: {
+    marginVertical: THEME.spacing.xl,
     flex: 1,
-    justifyContent: 'center',
-    paddingVertical: THEME.spacing.xl,
+    zIndex: 1,
   },
 });

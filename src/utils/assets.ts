@@ -2,9 +2,10 @@ export const ASSETS = {
   images: {
     blossom: require('../../assets/images/blossom.jpg'),
     awakening: require('../../assets/images/awakening.jpg'),
+    shards: require('../../assets/images/shards.jpg'),
+    infinite: require('../../assets/images/infinite.jpg'),
     profileSection: require('../../assets/images/profile-section.jpg'),
     bottomNavigation: require('../../assets/images/bottom-navigation.jpg'),
-    itemCollection: require('../../assets/images/item-collection.jpg'),
     profilePicturePlaceholder: require('../../assets/images/profile-picture-placeholder.jpg'),
   },
   icons: {

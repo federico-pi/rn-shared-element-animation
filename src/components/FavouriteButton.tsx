@@ -1,7 +1,13 @@
 import React from 'react';
-import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import { ASSETS } from '../utils/assets';
-import { AVAILABLE_ITEMS_MAP } from '../utils/listing';
+import { THEME } from '../utils/theme';
 
 export interface FavouriteProps {
   display?: {
@@ -11,13 +17,13 @@ export interface FavouriteProps {
 
 export function FavouriteButton({ display = {} }: FavouriteProps) {
   return (
-    <View style={[styles.container, display.containerStyle]}>
+    <TouchableOpacity style={[styles.container, display.containerStyle]}>
       <Image
         style={styles.icon}
         source={ASSETS.icons.whiteHeart}
         resizeMode="contain"
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -31,13 +37,12 @@ const styles = StyleSheet.create({
     height: FAVOURITE_BUTTON_SIZE,
     width: FAVOURITE_BUTTON_SIZE,
     borderRadius: FAVOURITE_BUTTON_SIZE / 2,
-    zIndex: Object.keys(AVAILABLE_ITEMS_MAP).length + 1,
-    overflow: 'hidden',
+    zIndex: 1,
   },
   icon: {
     width: 25,
     height: 25,
-    padding: 10,
+    padding: THEME.spacing.xs,
     opacity: 0.8,
   },
 });

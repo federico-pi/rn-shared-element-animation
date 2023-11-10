@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react';
-import { Image, StyleSheet, useWindowDimensions } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
-import { THEME } from '../utils/theme';
+import { Image, useWindowDimensions } from 'react-native';
 import { ASSETS } from '../utils/assets';
+import { THEME } from '../utils/theme';
 
+/**
+ * @todo implement real component
+ * @returns design placeholder
+ */
 export function ProfileSection() {
   const { width: windowWidth } = useWindowDimensions();
 
@@ -16,24 +19,13 @@ export function ProfileSection() {
   }, []);
 
   return (
-    <Animated.View
-      style={styles.container}
-      entering={FadeInUp.delay(100).duration(500)}
-    >
-      <Image
-        style={{
-          width: windowWidth - THEME.spacing.md * 2,
-          height: imageHeight,
-        }}
-        source={ASSETS.images.profileSection}
-        resizeMode="contain"
-      />
-    </Animated.View>
+    <Image
+      style={{
+        width: windowWidth - THEME.spacing.md * 2,
+        height: imageHeight,
+      }}
+      source={ASSETS.images.profileSection}
+      resizeMode="contain"
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
-  },
-});

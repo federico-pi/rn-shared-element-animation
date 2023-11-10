@@ -2,9 +2,7 @@ export const THEME = {
   colors: {
     white: '#fff',
     black: '#000',
-    dark: '#161719',
-    primary: '#6360DC',
-    body: '#405792',
+    primary: '#28292b',
   },
 
   fontSizes: {
