@@ -1,21 +1,29 @@
 import React from 'react';
 import {
+  StyleProp,
   StyleSheet,
   Text,
   TouchableOpacity,
   TouchableOpacityProps,
+  View,
+  ViewStyle,
 } from 'react-native';
 import { THEME } from '../utils/theme';
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
+  display?: {
+    containerStyle?: StyleProp<ViewStyle>;
+  };
 }
 
-export function Button({ title, style, ...rest }: ButtonProps) {
+export function Button({ title, style, display = {}, ...rest }: ButtonProps) {
   return (
-    <TouchableOpacity style={[styles.button, style]} {...rest}>
-      <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
+    <View style={display.containerStyle}>
+      <TouchableOpacity style={[styles.button, style]} {...rest}>
+        <Text style={styles.text}>{title}</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
