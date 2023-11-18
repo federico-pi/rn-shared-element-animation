@@ -1,20 +1,7 @@
 import { ImageSourcePropType } from 'react-native';
+import { BidderProfile, OwnerProfile } from './profile';
 
 export type ListingKeys = 'blossom' | 'awakening' | 'infinite' | 'shards';
-
-export interface BaseProfile {
-  fullName: string;
-  pictureImageSource: ImageSourcePropType;
-}
-
-export interface OwnerProfile extends BaseProfile {
-  editions: number;
-}
-
-export interface BidderProfile extends BaseProfile {
-  amount: number;
-  currency: string;
-}
 
 export interface Listing {
   key: ListingKeys;
@@ -27,4 +14,17 @@ export interface Listing {
   expiresAt: Date;
   tags: string[];
   history: unknown[];
+}
+
+export enum ListingTab {
+  OWNERS = 'Owners',
+  BIDS = 'Bids',
+  DETAILS = 'Details',
+  HISTORY = 'History',
+}
+
+export interface ListingLayoutValues {
+  tab: ListingTab;
+  x: number;
+  width: number;
 }

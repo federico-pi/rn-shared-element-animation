@@ -24,22 +24,19 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-  NavigationProps,
-  StackParamList,
-} from '../../navigation/MainNavigator';
+import { NavigationProps, StackParamList } from '../../../types/navigation';
 import {
   DEFAULT_ENTERING_ANIMATION_DELAY,
   DEFAULT_ENTERING_ANIMATION_DURATION,
-} from '../../utils/animation';
-import { ASSETS } from '../../utils/assets';
-import { LISTINGS_MAP } from '../../utils/listing';
-import { THEME } from '../../utils/theme';
-import { Button } from '../Button';
-import { Countdown } from '../Countdown';
-import { FavouriteButton } from '../FavouriteButton';
-import { InfoBox } from '../InfoBox';
-import { ListingTabs } from '../ListingTabs';
+} from '../../../utils/animation';
+import { ASSETS } from '../../../utils/assets';
+import { LISTING_MAP } from '../../../utils/listing';
+import { THEME } from '../../../utils/theme';
+import { Button } from '../../Button';
+import { Countdown } from '../../Countdown';
+import { FavouriteButton } from '../../FavouriteButton';
+import { InfoBox } from '../../InfoBox';
+import { ListingTabs } from './ListingTabs';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -54,7 +51,7 @@ export function Listing() {
   const [isExtended, setIsExtended] = useState(false);
 
   const listing = useMemo(
-    () => LISTINGS_MAP.find((listing) => listing.key === listingKey)!,
+    () => LISTING_MAP.find((listing) => listing.key === listingKey)!,
     [listingKey]
   );
 
@@ -175,7 +172,7 @@ export function Listing() {
   );
 }
 
-const INFO_BOX_HEIGHT = 65;
+const INFO_BOX_HEIGHT = 60;
 const BUTTON_HEIGHT = 70;
 const CONTENT_VERTICAL_SPACING = 30;
 
@@ -209,8 +206,11 @@ const styles = StyleSheet.create({
     marginVertical: CONTENT_VERTICAL_SPACING,
   },
   remainingTime: {
-    fontSize: THEME.fontSizes.lg,
-    lineHeight: THEME.fontSizes.xl,
+    color: THEME.colors.gray_dark,
+    fontWeight: THEME.font_weights.medium,
+    letterSpacing: 0.1,
+    fontSize: THEME.font_sizes.lg,
+    lineHeight: THEME.font_sizes.xl,
   },
   countdownContainer: {
     position: 'absolute',
@@ -229,9 +229,10 @@ const styles = StyleSheet.create({
     bottom: THEME.spacing.xl,
   },
   countdown: {
-    fontSize: THEME.fontSizes.xl,
-    lineHeight: THEME.fontSizes.xl,
-    fontWeight: THEME.fontWeights.semi_bold,
+    fontSize: THEME.font_sizes.xl - 1,
+    lineHeight: THEME.font_sizes.xl - 1,
+    fontWeight: THEME.font_weights.semi_bold,
+    color: THEME.colors.primary,
   },
   contentContainer: {
     flex: 1,
@@ -242,8 +243,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: THEME.fontSizes.md,
-    lineHeight: THEME.fontSizes.xl,
+    fontSize: THEME.font_sizes.md,
+    lineHeight: THEME.font_sizes.xl,
     marginBottom: THEME.spacing.xl,
   },
   buttonWrapper: {

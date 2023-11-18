@@ -20,7 +20,9 @@ export function Countdown({ targetDate, ...textProps }: CountdownProps) {
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
     setCountdown(
-      `${days > 0 ? `${days}d : ` : ''}${hours}h : ${minutes}m : ${seconds}s`
+      `${days > 0 ? `${days}d : ` : ''}${hours}h : ${minutes
+        .toString()
+        .padStart(2, '0')}m : ${seconds.toString().padStart(2, '0')}s`
     );
   }, [targetDate]);
 

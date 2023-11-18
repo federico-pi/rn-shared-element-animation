@@ -1,23 +1,27 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { BottomNavigation } from '../../navigation/BottomNavigation.placeholder';
-import { ProfileSection } from '../ProfileSection.placeholder';
-import { LISTINGS_MAP } from '../../utils/listing';
+import { BottomNavigator } from '../../navigation/BottomNavigator.placeholder';
+import { LISTING_MAP } from '../../utils/listing';
 import { THEME } from '../../utils/theme';
+import { SearchBar } from '../SearchBar.placeholder';
 
-import { ItemCardAnimated } from '../ItemCard/ItemCardAnimated';
+import { ListingCard } from '../ListingCard';
+import { Spacer } from '../Spacer';
+import { UserProfile } from '../UserProfile.placeholder';
 
 export function Home() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <ProfileSection />
+        <UserProfile />
+        <Spacer height={THEME.spacing.xl} />
+        <SearchBar />
         <View style={styles.listContainer}>
-          {LISTINGS_MAP.map((item) => (
-            <ItemCardAnimated key={item.key} item={item} />
+          {LISTING_MAP.map((listing) => (
+            <ListingCard key={listing.key} listing={listing} />
           ))}
         </View>
-        <BottomNavigation />
+        <BottomNavigator />
       </View>
     </SafeAreaView>
   );
@@ -33,7 +37,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: THEME.spacing.md,
   },
   listContainer: {
-    marginVertical: THEME.spacing.xl,
+    marginVertical: THEME.spacing.md * 2,
     flex: 1,
     zIndex: 1,
   },

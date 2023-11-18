@@ -4,17 +4,17 @@ export const THEME = {
     black: '#000',
     primary: '#28292b',
     secondary: '#f1f1f1',
+    gray: '#7c7c7c',
+    gray_dark: '#4a4a4a',
   },
-
-  fontSizes: {
+  font_sizes: {
     xs: 12,
     sm: 14,
     md: 16,
     lg: 18,
     xl: 20,
   },
-
-  fontWeights: {
+  font_weights: {
     thin: '100',
     extra_light: '200',
     light: '300',
@@ -25,7 +25,6 @@ export const THEME = {
     extra_bold: '800',
     black: '900',
   },
-
   radius: {
     xs: 5,
     sm: 10,
@@ -33,7 +32,6 @@ export const THEME = {
     lg: 24,
     xl: 40,
   },
-
   spacing: {
     xs: 10,
     sm: 12,

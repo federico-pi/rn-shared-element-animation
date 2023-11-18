@@ -1,11 +1,16 @@
 export const ASSETS = {
   images: {
-    blossom: require('../../assets/images/blossom.jpg'),
-    awakening: require('../../assets/images/awakening.jpg'),
-    shards: require('../../assets/images/shards.jpg'),
-    infinite: require('../../assets/images/infinite.jpg'),
-    'profile-section': require('../../assets/images/profile-section.jpg'),
-    'bottom-navigation': require('../../assets/images/bottom-navigation.jpg'),
+    items: {
+      blossom: require('../../assets/images/items/blossom.jpg'),
+      awakening: require('../../assets/images/items/awakening.jpg'),
+      shards: require('../../assets/images/items/shards.jpg'),
+      infinite: require('../../assets/images/items/infinite.jpg'),
+    },
+    placeholders: {
+      'user-profile': require('../../assets/images/placeholders/user-profile.jpg'),
+      'search-bar': require('../../assets/images/placeholders/search-bar.jpg'),
+      'bottom-navigator': require('../../assets/images/placeholders/bottom-navigator.jpg'),
+    },
     users: {
       'user-1': require('../../assets/images/users/user-1.png'),
       'user-2': require('../../assets/images/users/user-2.png'),

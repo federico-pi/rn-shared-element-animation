@@ -41,7 +41,7 @@ export function InfoBox({
           {image && <Image style={styles.image} source={image} />}
           {imageLabel && <Text style={styles.text}>{imageLabel}</Text>}
         </View>
-        {subText && <Text style={styles.text}>{subText}</Text>}
+        {subText && <Text style={styles.subText}>{subText}</Text>}
       </View>
     </BlurView>
   );
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    gap: THEME.spacing.md,
+    gap: THEME.spacing.sm,
   },
   image: {
     height: DEFAULT_IMAGE_SIZE,
@@ -62,16 +62,25 @@ const styles = StyleSheet.create({
     borderRadius: DEFAULT_IMAGE_SIZE / 2,
   },
   title: {
+    color: THEME.colors.primary,
     fontSize: 23,
     lineHeight: 23,
-    fontWeight: THEME.fontWeights.medium,
+    fontWeight: THEME.font_weights.semi_bold,
+    letterSpacing: 0.5,
   },
   description: {
-    fontSize: 25,
-    lineHeight: 25,
-    fontWeight: THEME.fontWeights.bold,
+    color: THEME.colors.primary,
+    fontSize: 26,
+    lineHeight: 26,
+    fontWeight: THEME.font_weights.bold,
+    letterSpacing: 0.25,
   },
   text: {
-    fontSize: THEME.fontSizes.lg,
+    fontSize: THEME.font_sizes.lg + 1,
+  },
+  subText: {
+    fontSize: THEME.font_sizes.md,
+    color: THEME.colors.gray,
+    fontWeight: THEME.font_weights.medium,
   },
 });

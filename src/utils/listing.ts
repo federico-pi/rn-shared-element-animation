@@ -1,34 +1,20 @@
 import { add, sub } from 'date-fns';
-import { BaseProfile, Listing } from '../types/listing';
+import { Listing } from '../types/listing';
 import { ASSETS } from './assets';
+import {
+  USER_1_BASE_PROFILE,
+  USER_2_BASE_PROFILE,
+  USER_3_BASE_PROFILE,
+  USER_4_BASE_PROFILE,
+} from './users';
 
-const USER_1_BASE_PROFILE: BaseProfile = {
-  fullName: 'Robert A.',
-  pictureImageSource: ASSETS.images.users['user-1'],
-};
-
-const USER_2_BASE_PROFILE: BaseProfile = {
-  fullName: 'Amy S.',
-  pictureImageSource: ASSETS.images.users['user-2'],
-};
-
-const USER_3_BASE_PROFILE: BaseProfile = {
-  fullName: 'John C.',
-  pictureImageSource: ASSETS.images.users['user-3'],
-};
-
-const USER_4_BASE_PROFILE: BaseProfile = {
-  fullName: 'Lily H.',
-  pictureImageSource: ASSETS.images.users['user-4'],
-};
-
-export const LISTINGS_MAP: Listing[] = [
+export const LISTING_MAP: Listing[] = [
   {
     key: 'blossom',
     name: 'Blossom',
     description:
       'Captivating artwork aimed at challenging conventional perceptions, inviting viewers to embrace the beauty found in the harmonious coexistence of diverse elements.',
-    imageSource: ASSETS.images.blossom,
+    imageSource: ASSETS.images.items.blossom,
     owners: [
       {
         ...USER_1_BASE_PROFILE,
@@ -62,7 +48,7 @@ export const LISTINGS_MAP: Listing[] = [
     name: 'Awakening',
     description:
       "A hand reaching with purpose and curiosity, symbolizing the relentless pursuit of a higher understanding and the awakening of one's true potential. ",
-    imageSource: ASSETS.images.awakening,
+    imageSource: ASSETS.images.items.awakening,
     owners: [
       {
         ...USER_2_BASE_PROFILE,
@@ -96,7 +82,7 @@ export const LISTINGS_MAP: Listing[] = [
     name: 'Infinite',
     description:
       'An endless spectrum of creativity and imagination, symbolizing the infinite potential that resides within every moment and artistic expression.',
-    imageSource: ASSETS.images.infinite,
+    imageSource: ASSETS.images.items.infinite,
     owners: [
       {
         ...USER_3_BASE_PROFILE,
@@ -130,7 +116,7 @@ export const LISTINGS_MAP: Listing[] = [
     name: 'Shards',
     description:
       'Evocative piece inviting contemplation on the beauty that arises from embracing change and the mosaic of experiences that shape our journey.',
-    imageSource: ASSETS.images.shards,
+    imageSource: ASSETS.images.items.shards,
     owners: [
       {
         ...USER_4_BASE_PROFILE,

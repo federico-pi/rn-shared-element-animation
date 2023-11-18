@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   text: {
     top: 3,
     color: THEME.colors.white,
-    fontSize: THEME.fontSizes.lg + 1,
-    fontWeight: THEME.fontWeights.semi_bold,
+    fontSize: THEME.font_sizes.lg + 1,
+    fontWeight: THEME.font_weights.semi_bold,
   },
 });
