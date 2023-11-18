@@ -4,12 +4,17 @@ export const ASSETS = {
     awakening: require('../../assets/images/awakening.jpg'),
     shards: require('../../assets/images/shards.jpg'),
     infinite: require('../../assets/images/infinite.jpg'),
-    profileSection: require('../../assets/images/profile-section.jpg'),
-    bottomNavigation: require('../../assets/images/bottom-navigation.jpg'),
-    profilePicturePlaceholder: require('../../assets/images/profile-picture-placeholder.jpg'),
+    'profile-section': require('../../assets/images/profile-section.jpg'),
+    'bottom-navigation': require('../../assets/images/bottom-navigation.jpg'),
+    users: {
+      'user-1': require('../../assets/images/users/user-1.png'),
+      'user-2': require('../../assets/images/users/user-2.png'),
+      'user-3': require('../../assets/images/users/user-3.png'),
+      'user-4': require('../../assets/images/users/user-4.png'),
+    },
   },
   icons: {
-    backArrow: require('../../assets/icons/back-arrow.png'),
-    whiteHeart: require('../../assets/icons/white-heart.png'),
+    'back-arrow': require('../../assets/icons/back-arrow.png'),
+    'white-heart': require('../../assets/icons/white-heart.png'),
   },
 };

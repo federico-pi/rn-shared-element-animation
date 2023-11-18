@@ -16,6 +16,7 @@ import {
   GestureDetector,
 } from 'react-native-gesture-handler';
 import Animated, {
+  Easing,
   FadeInDown,
   FadeInUp,
   useAnimatedStyle,
@@ -23,18 +24,22 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Button } from '../components/Button';
-import { Countdown } from '../components/Countdown';
-import { FavouriteButton } from '../components/FavouriteButton';
-import { InfoBox } from '../components/InfoBox';
-import { NavigationProps, StackParamList } from '../navigations/MainNavigator';
+import {
+  NavigationProps,
+  StackParamList,
+} from '../../navigation/MainNavigator';
 import {
   DEFAULT_ENTERING_ANIMATION_DELAY,
   DEFAULT_ENTERING_ANIMATION_DURATION,
-} from '../utils/animation';
-import { ASSETS } from '../utils/assets';
-import { AVAILABLE_ITEMS_MAP } from '../utils/listing';
-import { THEME } from '../utils/theme';
+} from '../../utils/animation';
+import { ASSETS } from '../../utils/assets';
+import { LISTINGS_MAP } from '../../utils/listing';
+import { THEME } from '../../utils/theme';
+import { Button } from '../Button';
+import { Countdown } from '../Countdown';
+import { FavouriteButton } from '../FavouriteButton';
+import { InfoBox } from '../InfoBox';
+import { ListingTabs } from '../ListingTabs';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -43,17 +48,19 @@ export function Listing() {
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const navigation = useNavigation<NavigationProps>();
   const {
-    params: { itemKey },
+    params: { listingKey },
   } = useRoute<RouteProp<StackParamList, 'Listing'>>();
 
   const [isExtended, setIsExtended] = useState(false);
 
-  const extendedOffset = windowHeight / 3;
-
-  const item = useMemo(
-    () => AVAILABLE_ITEMS_MAP.find((item) => item.key === itemKey)!,
-    [itemKey]
+  const listing = useMemo(
+    () => LISTINGS_MAP.find((listing) => listing.key === listingKey)!,
+    [listingKey]
   );
+
+  const mainOwner = listing.owners[0];
+  const highestBidder = listing.bidders[0];
+  const extendedOffset = windowHeight / 3;
 
   const contentHeight = useMemo(
     () => getContentHeight(insets.bottom),
@@ -75,11 +82,12 @@ export function Listing() {
     [isExtended]
   );
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      marginTop: withTiming(-imageOffset.value),
-    };
-  });
+  const animatedStyle = useAnimatedStyle(() => ({
+    marginTop: withTiming(-imageOffset.value, {
+      duration: 400,
+      easing: Easing.inOut(Easing.ease),
+    }),
+  }));
 
   return (
     <View style={styles.container}>
@@ -103,7 +111,7 @@ export function Listing() {
         >
           <Image
             style={styles.backArrowImage}
-            source={ASSETS.icons.backArrow}
+            source={ASSETS.icons['back-arrow']}
             resizeMode="contain"
           />
         </TouchableOpacity>
@@ -118,9 +126,9 @@ export function Listing() {
           },
           animatedStyle,
         ]}
-        source={item.source}
+        source={listing.imageSource}
         resizeMode="cover"
-        sharedTransitionTag={itemKey}
+        sharedTransitionTag={listingKey}
       />
       <AnimatedBlurView
         intensity={10}
@@ -130,7 +138,7 @@ export function Listing() {
       >
         <View style={styles.countdownContainer}>
           <Text style={styles.remainingTime}>{'Remaining Time'}</Text>
-          <Countdown style={styles.countdown} targetDate={item.expiryDate} />
+          <Countdown style={styles.countdown} targetDate={listing.expiresAt} />
         </View>
       </AnimatedBlurView>
       <Animated.View
@@ -145,14 +153,15 @@ export function Listing() {
         <GestureDetector gesture={pan}>
           <View style={styles.content}>
             <InfoBox
-              {...item.bid}
+              title={listing.name}
+              description={`${highestBidder.amount} ${highestBidder.currency}`}
+              image={mainOwner.pictureImageSource}
+              imageLabel={mainOwner.fullName}
+              subText="Current bid"
               display={{ containerStyle: styles.infoBoxContainer }}
             />
-            <Text style={styles.text}>
-              {
-                'This is my third painting based on Venus de Milo, collected from plant components'
-              }
-            </Text>
+            <Text style={styles.text}>{listing.description}</Text>
+            <ListingTabs listing={listing} />
           </View>
         </GestureDetector>
         <Button
@@ -233,8 +242,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: THEME.fontSizes.lg,
+    fontSize: THEME.fontSizes.md,
     lineHeight: THEME.fontSizes.xl,
+    marginBottom: THEME.spacing.xl,
   },
   buttonWrapper: {
     paddingTop: THEME.spacing.lg,

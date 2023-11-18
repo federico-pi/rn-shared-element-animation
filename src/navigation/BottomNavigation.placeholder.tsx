@@ -3,15 +3,19 @@ import { Image, useWindowDimensions } from 'react-native';
 import { ASSETS } from '../utils/assets';
 import { THEME } from '../utils/theme';
 
+const BOTTOM_NAVIGATION_IMAGE_SOURCE = ASSETS.images['bottom-navigation'];
+
 /**
  * @todo implement real component
  * @returns design placeholder
  */
-export function ProfileSection() {
+export function BottomNavigation() {
   const { width: windowWidth } = useWindowDimensions();
 
   const imageHeight = useMemo(() => {
-    const assetSource = Image.resolveAssetSource(ASSETS.images.profileSection);
+    const assetSource = Image.resolveAssetSource(
+      BOTTOM_NAVIGATION_IMAGE_SOURCE
+    );
 
     const imageRatio = assetSource.width / windowWidth;
 
@@ -24,7 +28,7 @@ export function ProfileSection() {
         width: windowWidth - THEME.spacing.md * 2,
         height: imageHeight,
       }}
-      source={ASSETS.images.profileSection}
+      source={BOTTOM_NAVIGATION_IMAGE_SOURCE}
       resizeMode="contain"
     />
   );

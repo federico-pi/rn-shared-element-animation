@@ -20,7 +20,7 @@ export function FavouriteButton({ display = {} }: FavouriteProps) {
     <TouchableOpacity style={[styles.container, display.containerStyle]}>
       <Image
         style={styles.icon}
-        source={ASSETS.icons.whiteHeart}
+        source={ASSETS.icons['white-heart']}
         resizeMode="contain"
       />
     </TouchableOpacity>

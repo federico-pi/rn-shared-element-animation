@@ -1,11 +1,11 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { BottomNavigation } from '../components/BottomNavigation';
-import { ProfileSection } from '../components/ProfileSection';
-import { AVAILABLE_ITEMS_MAP } from '../utils/listing';
-import { THEME } from '../utils/theme';
+import { BottomNavigation } from '../../navigation/BottomNavigation.placeholder';
+import { ProfileSection } from '../ProfileSection.placeholder';
+import { LISTINGS_MAP } from '../../utils/listing';
+import { THEME } from '../../utils/theme';
 
-import { ItemCardAnimated } from '../components/ItemCard/ItemCardAnimated';
+import { ItemCardAnimated } from '../ItemCard/ItemCardAnimated';
 
 export function Home() {
   return (
@@ -13,7 +13,7 @@ export function Home() {
       <View style={styles.container}>
         <ProfileSection />
         <View style={styles.listContainer}>
-          {AVAILABLE_ITEMS_MAP.map((item) => (
+          {LISTINGS_MAP.map((item) => (
             <ItemCardAnimated key={item.key} item={item} />
           ))}
         </View>

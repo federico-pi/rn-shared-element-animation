@@ -3,13 +3,13 @@ import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 import React from 'react';
-import { Home } from '../screens/Home';
-import { Listing } from '../screens/Listing';
-import { ItemKey } from '../utils/listing';
+import { Home } from '../components/screens/Home';
+import { Listing } from '../components/screens/Listing';
+import { ListingKeys } from '../types/listing';
 
 export type StackParamList = {
   Home: undefined;
-  Listing: { itemKey: ItemKey };
+  Listing: { listingKey: ListingKeys };
 };
 
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;

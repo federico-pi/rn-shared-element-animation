@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { THEME } from '../utils/theme';
 
-interface ButtonProps extends TouchableOpacityProps {
+export interface ButtonProps extends TouchableOpacityProps {
   title: string;
   display?: {
     containerStyle?: StyleProp<ViewStyle>;
@@ -36,8 +36,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
+    top: 3,
     color: THEME.colors.white,
-    fontSize: THEME.fontSizes.md,
-    fontWeight: THEME.fontWeights.bold,
+    fontSize: THEME.fontSizes.lg + 1,
+    fontWeight: THEME.fontWeights.semi_bold,
   },
 });

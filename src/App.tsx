@@ -2,9 +2,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { MainNavigator } from './navigations/MainNavigator';
+import { MainNavigator } from './navigation/MainNavigator';
 
-registerRootComponent(() => {
+function App() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <NavigationContainer>
@@ -12,7 +12,9 @@ registerRootComponent(() => {
       </NavigationContainer>
     </GestureHandlerRootView>
   );
-});
+}
+
+registerRootComponent(App);
 
 const styles = StyleSheet.create({
   root: {

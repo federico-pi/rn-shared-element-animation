@@ -8,11 +8,11 @@ import {
   DEFAULT_ENTERING_ANIMATION_DELAY,
   DEFAULT_ENTERING_ANIMATION_DURATION,
 } from '../../utils/animation';
-import { AvailableItem } from '../../utils/listing';
 import { THEME } from '../../utils/theme';
+import { Listing } from '../../types/listing';
 
 export interface ItemCardProps {
-  item: AvailableItem;
+  item: Listing;
 }
 
 export function ItemCard({ item }: ItemCardProps) {
@@ -22,6 +22,9 @@ export function ItemCard({ item }: ItemCardProps) {
     height: number;
     width: number;
   }>();
+
+  const mainOwner = item.owners[0];
+  const highestBid = item.bidders[0];
 
   const onLayout = useCallback((event: LayoutChangeEvent) => {
     setImageDimension({
@@ -37,7 +40,7 @@ export function ItemCard({ item }: ItemCardProps) {
       />
       <Animated.Image
         style={[styles.sharedImage, imageDimension]}
-        source={item.source}
+        source={item.imageSource}
         resizeMode="cover"
         sharedTransitionTag={item.key}
       />
@@ -48,7 +51,11 @@ export function ItemCard({ item }: ItemCardProps) {
           )}
         >
           <InfoBox
-            {...item.bid}
+            title={item.name}
+            description={`${highestBid.amount} ${highestBid.currency}`}
+            image={mainOwner.pictureImageSource}
+            imageLabel={mainOwner.fullName}
+            subText="Current bid"
             display={{ containerStyle: styles.infoBoxContainer }}
           />
         </Animated.View>

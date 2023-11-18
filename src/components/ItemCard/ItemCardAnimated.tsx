@@ -17,7 +17,7 @@ import {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { NavigationProps } from '../../navigations/MainNavigator';
+import { NavigationProps } from '../../navigation/MainNavigator';
 
 const SCALE_ANIMATION_VALUE = 0.925;
 const ON_PRESS_SWIPE_HITSLOP = 25;
@@ -75,7 +75,7 @@ export function ItemCardAnimated({ item }: ItemCardProps) {
       Math.abs(event.translationY) < ON_PRESS_SWIPE_HITSLOP
     ) {
       setTimeout(
-        () => navigation.navigate('Listing', { itemKey: item.key }),
+        () => navigation.navigate('Listing', { listingKey: item.key }),
         SNAP_BACK_DURATION
       );
     }
