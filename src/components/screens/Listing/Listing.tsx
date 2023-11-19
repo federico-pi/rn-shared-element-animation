@@ -1,9 +1,8 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
-import { StatusBar } from 'expo-status-bar';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Image,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -31,6 +30,7 @@ import {
 } from '../../../utils/animation';
 import { ASSETS } from '../../../utils/assets';
 import { LISTING_MAP } from '../../../utils/listing';
+import { IS_ANDROID } from '../../../utils/native';
 import { THEME } from '../../../utils/theme';
 import { Button } from '../../Button';
 import { Countdown } from '../../Countdown';
@@ -38,7 +38,7 @@ import { FavouriteButton } from '../../FavouriteButton';
 import { InfoBox } from '../../InfoBox';
 import { ListingTabs } from './ListingTabs';
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+const DEFAULT_IMAGE_OFFSET = THEME.radius.xl;
 
 export function Listing() {
   const insets = useSafeAreaInsets();
@@ -57,14 +57,14 @@ export function Listing() {
 
   const mainOwner = listing.owners[0];
   const highestBidder = listing.bidders[0];
-  const extendedOffset = windowHeight / 3;
+  const extendedOffset = windowHeight / 2.5;
 
   const contentHeight = useMemo(
     () => getContentHeight(insets.bottom),
     [insets.bottom, extendedOffset]
   );
 
-  const imageOffset = useSharedValue(0);
+  const imageOffset = useSharedValue<number>(DEFAULT_IMAGE_OFFSET);
 
   const pan = useMemo(
     () =>
@@ -73,7 +73,9 @@ export function Listing() {
         .direction(isExtended ? Directions.DOWN : Directions.UP)
         .runOnJS(true)
         .onStart(() => {
-          imageOffset.value = isExtended ? 0 : extendedOffset;
+          imageOffset.value = isExtended
+            ? DEFAULT_IMAGE_OFFSET
+            : extendedOffset;
           setIsExtended((prevState) => !prevState);
         }),
     [isExtended]
@@ -86,68 +88,78 @@ export function Listing() {
     }),
   }));
 
+  useEffect(() => {
+    StatusBar.setBarStyle('light-content', true);
+
+    return () => {
+      StatusBar.setBarStyle('dark-content', true);
+    };
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Animated.View
-        style={[
-          styles.actionsContainer,
-          { top: insets.top + THEME.spacing.sm },
-        ]}
-        entering={FadeInUp.delay(DEFAULT_ENTERING_ANIMATION_DELAY).duration(
-          DEFAULT_ENTERING_ANIMATION_DURATION
-        )}
-      >
-        <TouchableOpacity
-          onPress={navigation.goBack}
-          hitSlop={{
-            top: THEME.spacing.md,
-            right: THEME.spacing.md,
-            bottom: THEME.spacing.md,
-            left: THEME.spacing.md,
-          }}
+    <GestureDetector gesture={pan}>
+      <View style={styles.container}>
+        <Animated.View
+          style={[
+            styles.actionsContainer,
+            { top: insets.top + THEME.spacing.sm },
+          ]}
+          entering={FadeInUp.delay(DEFAULT_ENTERING_ANIMATION_DELAY).duration(
+            DEFAULT_ENTERING_ANIMATION_DURATION
+          )}
         >
-          <Image
-            style={styles.backArrowImage}
-            source={ASSETS.icons['back-arrow']}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <FavouriteButton />
-      </Animated.View>
-      <Animated.Image
-        style={[
-          styles.sharedImage,
-          {
-            width: windowWidth,
-            height: windowHeight - contentHeight,
-          },
-          animatedStyle,
-        ]}
-        source={listing.imageSource}
-        resizeMode="cover"
-        sharedTransitionTag={listingKey}
-      />
-      <AnimatedBlurView
-        intensity={10}
-        entering={FadeInDown.delay(DEFAULT_ENTERING_ANIMATION_DELAY).duration(
-          DEFAULT_ENTERING_ANIMATION_DURATION
-        )}
-      >
-        <View style={styles.countdownContainer}>
-          <Text style={styles.remainingTime}>{'Remaining Time'}</Text>
-          <Countdown style={styles.countdown} targetDate={listing.expiresAt} />
-        </View>
-      </AnimatedBlurView>
-      <Animated.View
-        style={[
-          styles.contentContainer,
-          { height: contentHeight + (isExtended ? extendedOffset : 0) },
-        ]}
-        entering={FadeInDown.delay(DEFAULT_ENTERING_ANIMATION_DELAY).duration(
-          DEFAULT_ENTERING_ANIMATION_DURATION
-        )}
-      >
-        <GestureDetector gesture={pan}>
+          <TouchableOpacity
+            onPress={navigation.goBack}
+            hitSlop={{
+              top: THEME.spacing.md,
+              right: THEME.spacing.md,
+              bottom: THEME.spacing.md,
+              left: THEME.spacing.md,
+            }}
+          >
+            <Image
+              style={styles.backArrowImage}
+              source={ASSETS.icons['back-arrow']}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <FavouriteButton />
+        </Animated.View>
+        <Animated.Image
+          style={[
+            styles.sharedImage,
+            {
+              width: windowWidth,
+              height: windowHeight - contentHeight,
+            },
+            animatedStyle,
+          ]}
+          source={listing.imageSource}
+          resizeMode="cover"
+          sharedTransitionTag={listing.key}
+        />
+        <Animated.View
+          entering={FadeInDown.delay(DEFAULT_ENTERING_ANIMATION_DELAY).duration(
+            DEFAULT_ENTERING_ANIMATION_DURATION
+          )}
+        >
+          <View style={styles.countdownContainer}>
+            <Text style={styles.remainingTime}>{'Remaining Time'}</Text>
+            <Countdown
+              style={styles.countdown}
+              targetDate={listing.expiresAt}
+            />
+          </View>
+        </Animated.View>
+        <Animated.View
+          style={[
+            styles.contentContainer,
+            { height: contentHeight + (isExtended ? extendedOffset : 0) },
+          ]}
+          entering={FadeInDown.delay(DEFAULT_ENTERING_ANIMATION_DELAY).duration(
+            DEFAULT_ENTERING_ANIMATION_DURATION
+          )}
+        >
           <View style={styles.content}>
             <InfoBox
               title={listing.name}
@@ -160,15 +172,15 @@ export function Listing() {
             <Text style={styles.text}>{listing.description}</Text>
             <ListingTabs listing={listing} />
           </View>
-        </GestureDetector>
-        <Button
-          title="Collect item"
-          style={[styles.button, { marginBottom: insets.bottom }]}
-          display={{ containerStyle: styles.buttonWrapper }}
-        />
-      </Animated.View>
-      <StatusBar style="light" animated={true} />
-    </View>
+          <View style={styles.buttonWrapper}>
+            <Button
+              title="Collect item"
+              style={[styles.button, { marginBottom: insets.bottom }]}
+            />
+          </View>
+        </Animated.View>
+      </View>
+    </GestureDetector>
   );
 }
 
@@ -177,7 +189,11 @@ const BUTTON_HEIGHT = 70;
 const CONTENT_VERTICAL_SPACING = 30;
 
 const getContentHeight = (insetBottom: number) =>
-  INFO_BOX_HEIGHT + BUTTON_HEIGHT + CONTENT_VERTICAL_SPACING * 2 + insetBottom;
+  insetBottom +
+  INFO_BOX_HEIGHT +
+  BUTTON_HEIGHT +
+  CONTENT_VERTICAL_SPACING * 2 -
+  DEFAULT_IMAGE_OFFSET;
 
 const styles = StyleSheet.create({
   container: {
@@ -191,11 +207,11 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: THEME.spacing.lg,
     flexDirection: 'row',
-    zIndex: 1,
+    zIndex: 2,
   },
   backArrowImage: {
-    width: 28,
-    height: 28,
+    width: 26,
+    height: 26,
   },
   sharedImage: {
     borderRadius: THEME.radius.xl,
@@ -215,12 +231,12 @@ const styles = StyleSheet.create({
   countdownContainer: {
     position: 'absolute',
     width: '91%',
-    alignSelf: 'center',
     paddingHorizontal: THEME.spacing.xl,
     paddingVertical: THEME.spacing.lg,
     backgroundColor: 'rgba(255, 255, 255, 0.75)',
     borderRadius: 32,
     flexDirection: 'row',
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
     overflow: 'hidden',
@@ -232,7 +248,7 @@ const styles = StyleSheet.create({
     fontSize: THEME.font_sizes.xl - 1,
     lineHeight: THEME.font_sizes.xl - 1,
     fontWeight: THEME.font_weights.semi_bold,
-    color: THEME.colors.primary,
+    color: THEME.colors.off_black,
   },
   contentContainer: {
     flex: 1,
@@ -249,10 +265,11 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     paddingTop: THEME.spacing.lg,
+    paddingBottom: IS_ANDROID ? THEME.spacing.xs : undefined,
     backgroundColor: THEME.colors.white,
+    zIndex: 2,
   },
   button: {
-    paddingTop: THEME.spacing.md,
     height: BUTTON_HEIGHT,
     bottom: 4,
   },

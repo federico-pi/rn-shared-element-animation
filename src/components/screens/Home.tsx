@@ -5,6 +5,7 @@ import { LISTING_MAP } from '../../utils/listing';
 import { THEME } from '../../utils/theme';
 import { SearchBar } from '../SearchBar.placeholder';
 
+import { IS_ANDROID, IS_IOS } from '../../utils/native';
 import { ListingCard } from '../ListingCard';
 import { Spacer } from '../Spacer';
 import { UserProfile } from '../UserProfile.placeholder';
@@ -34,6 +35,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop: IS_IOS ? THEME.spacing.xs : THEME.spacing.md * 2,
+    paddingBottom: IS_ANDROID ? THEME.spacing.sm : 0,
     paddingHorizontal: THEME.spacing.md,
   },
   listContainer: {

@@ -7,7 +7,6 @@ interface Props {
   fill?: boolean;
 }
 
-/* Returns an UI helper component for spacing width and height. */
 export function Spacer({ height = 0, width = 0, fill = false }: Props) {
   if (!height && !width) {
     return null;

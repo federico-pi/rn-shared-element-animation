@@ -6,7 +6,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { LayoutChangeEvent } from 'react-native';
 import {
   Gesture,
@@ -41,7 +41,6 @@ export interface ItemCardProps {
 }
 
 export function ListingCard({ listing }: ItemCardProps) {
-  const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProps>();
   const { width: windowWidth } = useWindowDimensions();
 
@@ -53,12 +52,15 @@ export function ListingCard({ listing }: ItemCardProps) {
   const mainOwner = listing.owners[0];
   const highestBid = listing.bidders[0];
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    setImageDimension({
-      height: event.nativeEvent.layout.height,
-      width: event.nativeEvent.layout.width,
-    });
-  }, []);
+  const onLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setImageDimension({
+        height: event.nativeEvent.layout.height,
+        width: event.nativeEvent.layout.width,
+      });
+    },
+    [imageDimension]
+  );
 
   const scale = useSharedValue(1);
   const translateX = useSharedValue(0);
@@ -150,22 +152,20 @@ export function ListingCard({ listing }: ItemCardProps) {
           resizeMode="cover"
           sharedTransitionTag={listing.key}
         />
-        {isFocused && (
-          <Animated.View
-            entering={FadeInDown.delay(
-              DEFAULT_ENTERING_ANIMATION_DELAY
-            ).duration(DEFAULT_ENTERING_ANIMATION_DURATION)}
-          >
-            <InfoBox
-              title={listing.name}
-              description={`${highestBid.amount} ${highestBid.currency}`}
-              image={mainOwner.pictureImageSource}
-              imageLabel={mainOwner.fullName}
-              subText="Current bid"
-              display={{ containerStyle: styles.infoBoxContainer }}
-            />
-          </Animated.View>
-        )}
+        <Animated.View
+          entering={FadeInDown.delay(DEFAULT_ENTERING_ANIMATION_DELAY).duration(
+            DEFAULT_ENTERING_ANIMATION_DURATION
+          )}
+        >
+          <InfoBox
+            title={listing.name}
+            description={`${highestBid.amount} ${highestBid.currency}`}
+            image={mainOwner.pictureImageSource}
+            imageLabel={mainOwner.fullName}
+            subText="Current bid"
+            display={{ containerStyle: styles.infoBoxContainer }}
+          />
+        </Animated.View>
       </Animated.View>
     </GestureDetector>
   );

@@ -1,11 +1,11 @@
 export const THEME = {
   colors: {
     white: '#fff',
-    black: '#000',
-    primary: '#28292b',
-    secondary: '#f1f1f1',
+    gray_light: '#f3f3f3',
     gray: '#7c7c7c',
     gray_dark: '#4a4a4a',
+    off_black: '#28292b',
+    black: '#000',
   },
   font_sizes: {
     xs: 12,
@@ -39,7 +39,6 @@ export const THEME = {
     lg: 20,
     xl: 24,
   },
-
   breakpoints: {
     xs: 576,
     sm: 768,

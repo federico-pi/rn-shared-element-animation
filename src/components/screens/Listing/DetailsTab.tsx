@@ -41,6 +41,5 @@ const styles = StyleSheet.create({
   listedAt: {
     color: THEME.colors.black,
     fontSize: THEME.font_sizes.md + 1,
-    fontWeight: THEME.font_weights.light,
   },
 });

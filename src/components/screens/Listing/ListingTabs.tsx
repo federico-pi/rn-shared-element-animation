@@ -43,10 +43,13 @@ export function ListingTabs({ listing }: ListingTabsProps) {
     [listing.key]
   );
 
-  const reducer = (
-    state: ListingLayoutValues[],
-    action: ListingLayoutValues
-  ) => [...state, action];
+  const reducer = useCallback(
+    (state: ListingLayoutValues[], action: ListingLayoutValues) => [
+      ...state,
+      action,
+    ],
+    []
+  );
 
   const [layout, dispatch] = useReducer(reducer, []);
   const [activeTab, setActiveTab] = useState(ListingTab.OWNERS);
@@ -92,7 +95,7 @@ export function ListingTabs({ listing }: ListingTabsProps) {
             return interpolateColor(
               color.value,
               [0, 1],
-              [THEME.colors.primary, THEME.colors.white]
+              [THEME.colors.off_black, THEME.colors.white]
             );
           });
 
@@ -103,11 +106,7 @@ export function ListingTabs({ listing }: ListingTabsProps) {
           }));
 
           useEffect(() => {
-            if (tab === activeTab) {
-              color.value = 1;
-            } else {
-              color.value = 0;
-            }
+            color.value = tab === activeTab ? 1 : 0;
           }, [activeTab]);
 
           return (
@@ -137,13 +136,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: TAB_HEIGHT,
     borderRadius: TAB_HEIGHT / 2,
-    backgroundColor: THEME.colors.secondary,
+    backgroundColor: THEME.colors.gray_light,
     paddingHorizontal: THEME.spacing.lg / 2,
   },
   animatedIndicator: {
     position: 'absolute',
     height: TAB_HEIGHT,
-    backgroundColor: THEME.colors.primary,
+    backgroundColor: THEME.colors.off_black,
     borderRadius: TAB_HEIGHT / 2,
   },
   text: {

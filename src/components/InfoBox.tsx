@@ -1,4 +1,3 @@
-import { BlurView } from 'expo-blur';
 import React from 'react';
 import {
   Image,
@@ -31,7 +30,7 @@ export function InfoBox({
   display = {},
 }: InfoBoxProps) {
   return (
-    <BlurView style={display.containerStyle} intensity={10}>
+    <View style={display.containerStyle}>
       <View style={styles.rowContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
@@ -43,7 +42,7 @@ export function InfoBox({
         </View>
         {subText && <Text style={styles.subText}>{subText}</Text>}
       </View>
-    </BlurView>
+    </View>
   );
 }
 
@@ -62,14 +61,14 @@ const styles = StyleSheet.create({
     borderRadius: DEFAULT_IMAGE_SIZE / 2,
   },
   title: {
-    color: THEME.colors.primary,
+    color: THEME.colors.off_black,
     fontSize: 23,
     lineHeight: 23,
     fontWeight: THEME.font_weights.semi_bold,
     letterSpacing: 0.5,
   },
   description: {
-    color: THEME.colors.primary,
+    color: THEME.colors.off_black,
     fontSize: 26,
     lineHeight: 26,
     fontWeight: THEME.font_weights.bold,
